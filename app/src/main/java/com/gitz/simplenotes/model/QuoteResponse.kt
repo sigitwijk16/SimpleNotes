@@ -1,4 +1,8 @@
 package com.gitz.simplenotes.model
 
-class QuoteResponse {
-}
+import com.google.gson.annotations.SerializedName
+data class QuoteResponseItem(
+    val quote: String? = null,
+    val author: String? = null,
+    val category: String? = null
+)

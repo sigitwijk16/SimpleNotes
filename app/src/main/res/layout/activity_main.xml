@@ -4,24 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@id/addNoteButton"
+    <LinearLayout
+        android:id="@+id/quoteContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNoteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="Add Note"
-        android:src="@drawable/ic_add"
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/quoteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textStyle="italic"
+                tools:text="This is a quote of the day..." />
+
+            <ProgressBar
+                android:id="@+id/progressBarQuote"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                 />
+        </FrameLayout>
+
+
+        <ImageButton
+            android:id="@+id/refreshQuoteButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_vertical"
+            app:tint="@color/white"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_refresh"
+            android:contentDescription="Refresh Quote" />
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quoteContainer">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            tools:listitem="@layout/item_note" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addNoteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:contentDescription="Add Note"
+            android:src="@drawable/ic_add" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
