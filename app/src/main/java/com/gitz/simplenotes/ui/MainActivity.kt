@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +21,12 @@ import com.gitz.simplenotes.adapter.NoteAdapter
 import com.gitz.simplenotes.model.Resource
 import com.gitz.simplenotes.viewmodel.NoteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var noteViewModel: NoteViewModel
+    private val noteViewModel: NoteViewModel by viewModels()
     private lateinit var notesRecyclerView: RecyclerView
     private lateinit var addNoteButton: FloatingActionButton
     private lateinit var refreshQuoteButton: ImageButton
@@ -41,8 +44,6 @@ class MainActivity : AppCompatActivity() {
         quoteTextView = findViewById(R.id.quoteTextView)
         refreshQuoteButton = findViewById(R.id.refreshQuoteButton)
         progressBarQuote = findViewById(R.id.progressBarQuote)
-
-        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
         setupRecyclerView()
 

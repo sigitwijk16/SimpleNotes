@@ -2,7 +2,7 @@ package com.gitz.simplenotes.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -16,13 +16,16 @@ import com.gitz.simplenotes.repository.NoteRepository
 import com.gitz.simplenotes.repository.NoteRepositoryImpl
 import com.gitz.simplenotes.repository.QuoteRepository
 import com.gitz.simplenotes.repository.QuoteRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NoteViewModel(application: Application): AndroidViewModel(application) {
-
-    private val noteRepository: NoteRepository
+@HiltViewModel
+class NoteViewModel @Inject constructor(
+    private val noteRepository: NoteRepository,
     private val quoteRepository: QuoteRepository
+): ViewModel() {
 
     val allNotes: LiveData<List<Note>>
 
@@ -30,12 +33,6 @@ class NoteViewModel(application: Application): AndroidViewModel(application) {
     val quote: LiveData<Resource<QuoteResponseItem?>> = _quote
 
     init {
-        val noteDao = AppDatabase.getDatabase(application).noteDao()
-        noteRepository = NoteRepositoryImpl(noteDao)
-
-        val apiService = RetrofitInstance.api
-        quoteRepository = QuoteRepositoryImpl(apiService)
-
         allNotes = noteRepository.getAllNotes()
         fetchRandomQuote()
     }
