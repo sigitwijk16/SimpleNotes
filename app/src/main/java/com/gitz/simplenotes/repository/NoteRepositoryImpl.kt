@@ -3,6 +3,7 @@ package com.gitz.simplenotes.repository
 import androidx.lifecycle.LiveData
 import com.gitz.simplenotes.data.local.NoteDao
 import com.gitz.simplenotes.model.Note
+import javax.inject.Inject
 
 class NoteRepositoryImpl(private val noteDao: NoteDao) : NoteRepository {
     override fun getAllNotes(): LiveData<List<Note>> {

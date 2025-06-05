@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.gitz.simplenotes.R
 
-class NoteAdapter(private val onItemClicked: (Note) -> Unit): ListAdapter<Note, NoteAdapter.NoteViewHolder>(NotesComparator()) {
+class NoteAdapter(
+    private val onItemClicked: (Note) -> Unit
+): ListAdapter<Note, NoteAdapter.NoteViewHolder>(NotesComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
         return NoteViewHolder(view)
@@ -33,6 +35,10 @@ class NoteAdapter(private val onItemClicked: (Note) -> Unit): ListAdapter<Note, 
         holder.itemView.setOnClickListener {
             onItemClicked(currentNote)
         }
+    }
+
+    fun getNoteAt(position: Int): Note {
+        return getItem(position)
     }
 
     class NotesComparator: DiffUtil.ItemCallback<Note>() {

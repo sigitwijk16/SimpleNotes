@@ -12,12 +12,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gitz.simplenotes.R
 import com.gitz.simplenotes.adapter.NoteAdapter
+import com.gitz.simplenotes.model.Note
 import com.gitz.simplenotes.model.Resource
 import com.gitz.simplenotes.viewmodel.NoteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -47,8 +49,24 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
+        setupItemTouchHelper()
+
         noteViewModel.fetchRandomQuote()
 
+        setupObserver()
+
+        addNoteButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
+            addEditNoteLauncher.launch(intent)
+        }
+
+        refreshQuoteButton.setOnClickListener {
+            noteViewModel.fetchRandomQuote()
+        }
+
+    }
+
+    private fun setupObserver() {
         noteViewModel.allNotes.observe(this) { notes ->
             notes?.let {
                 noteAdapter.submitList(notes)
@@ -91,17 +109,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-
-        addNoteButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
-            addEditNoteLauncher.launch(intent)
-        }
-
-        refreshQuoteButton.setOnClickListener {
-            noteViewModel.fetchRandomQuote()
-        }
-
-        setupItemTouchHelper()
     }
 
     private fun setupItemTouchHelper() {
@@ -120,21 +127,25 @@ class MainActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
                 val noteToDelete = noteAdapter.currentList[position]
-
                 noteViewModel.delete(noteToDelete)
             }
         }
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(notesRecyclerView)
     }
 
+
     private fun setupRecyclerView() {
-        noteAdapter = NoteAdapter { selectedNote ->
-            val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
-            intent.putExtra(AddEditNoteActivity.EXTRA_ID, selectedNote.id)
-            intent.putExtra(AddEditNoteActivity.EXTRA_TITLE, selectedNote.title)
-            intent.putExtra(AddEditNoteActivity.EXTRA_CONTENT, selectedNote.content)
-            addEditNoteLauncher.launch(intent)
-        }
+        noteAdapter = NoteAdapter(
+            onItemClicked = object : (Note) -> Unit {
+                override fun invoke(selectedNote: Note) {
+                    val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
+                    intent.putExtra(AddEditNoteActivity.EXTRA_ID, selectedNote.id)
+                    intent.putExtra(AddEditNoteActivity.EXTRA_TITLE, selectedNote.title)
+                    intent.putExtra(AddEditNoteActivity.EXTRA_CONTENT, selectedNote.content)
+                    addEditNoteLauncher.launch(intent)
+                }
+            }
+        )
         notesRecyclerView.adapter = noteAdapter
         notesRecyclerView.layoutManager = LinearLayoutManager(this)
     }

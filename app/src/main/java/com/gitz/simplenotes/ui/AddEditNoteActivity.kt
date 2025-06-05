@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.gitz.simplenotes.R
 import com.gitz.simplenotes.model.Note
 import com.gitz.simplenotes.viewmodel.NoteViewModel
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddEditNoteActivity : AppCompatActivity() {
 
     companion object {
@@ -23,7 +26,7 @@ class AddEditNoteActivity : AppCompatActivity() {
     private lateinit var noteContentEditText: TextInputEditText
     private lateinit var saveNoteButton: Button
 
-    private lateinit var noteViewModel: NoteViewModel
+    private val noteViewModel: NoteViewModel by viewModels()
     private var currentNoteId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,10 +37,8 @@ class AddEditNoteActivity : AppCompatActivity() {
         noteContentEditText = findViewById(R.id.noteContentEditText)
         saveNoteButton = findViewById(R.id.saveNoteButton)
 
-        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) // Show back button
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close) // Optional: use a close icon
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
 
         if (intent.hasExtra(EXTRA_ID)) {
             title = "Edit Note"
