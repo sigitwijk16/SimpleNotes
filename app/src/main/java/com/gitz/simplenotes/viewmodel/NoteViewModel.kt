@@ -1,21 +1,15 @@
 package com.gitz.simplenotes.viewmodel
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.gitz.simplenotes.data.local.AppDatabase
-import com.gitz.simplenotes.data.local.NoteDao
-import com.gitz.simplenotes.data.remote.RetrofitInstance
 import com.gitz.simplenotes.model.Note
 import com.gitz.simplenotes.model.QuoteResponseItem
 import com.gitz.simplenotes.model.Resource
 import com.gitz.simplenotes.repository.NoteRepository
-import com.gitz.simplenotes.repository.NoteRepositoryImpl
 import com.gitz.simplenotes.repository.QuoteRepository
-import com.gitz.simplenotes.repository.QuoteRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

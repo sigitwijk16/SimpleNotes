@@ -47,7 +47,7 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center_vertical"
             app:tint="@color/white"
-            android:background="@android:color/transparent"
+            android:background="@drawable/circle_background"
             android:src="@drawable/ic_refresh"
             android:contentDescription="Refresh Quote" />
 
